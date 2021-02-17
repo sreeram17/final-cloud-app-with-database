@@ -11,7 +11,7 @@
 
 <body>
     <!-- Navigation bar -->
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
             <div class="navbar-header">
                   <a class="navbar-brand" href="{% url 'onlinecourse:index' %}">Home</a>
@@ -20,7 +20,7 @@
                 {% if user.is_authenticated %}
                 <li>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                    <a class="btn btn-link" href="{% url 'onlinecourse:logout' %}">Logout</a>
+                    <a class="btn btn-light" href="{% url 'onlinecourse:logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li>
@@ -41,15 +41,15 @@
 
     <!-- Page content -->
     <div class="container-fluid">
-            <h2>{{ course.name }}</h2>
-            <div class="card-columns-vertical">
-                {% for lesson in course.lesson_set.all %}
-                    <div class="card mt-1">
-                        <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
-                        <div class="card-body">{{lesson.content}}</div>
-                    </div>
-                {% endfor %}
-            </div>
+        <h2>{{ course.name }}</h2>
+        <div class="card-columns-vertical">
+            {% for lesson in course.lesson_set.all %}
+                <div class="card mt-1">
+                    <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
+                    <div class="card-body">{{lesson.content}}</div>
+                </div>
+            {% endfor %}
+        </div>
             <!-- Task: show questions and choices -->
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
@@ -75,25 +75,32 @@
             <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
             -->
 
-            <!-- A choice submission form example
+            <!-- A choice submission form example -->
+        <button type="button" class="btn btn-primary btn-block" data-toggle="collapse" data-target="#exam">Show questions</button>
+        <div id="exam" class="collapse">
             <form id="questionform" action="point to a submit view" method="post">
-                        ... for each question in the course ...
+                        <!--... for each question in the course ...-->
+                        {% for question in course.question_set.all %}
                         <div class="card mt-1">
                             <div class="card-header"><h5>{{ question.question_text}}</h5></div>
-                            {% csrf_token %}
                             <div class="form-group">
-                               ... for each choice in the question ...
+                            <!--... for each choice in the question ...-->
                                 <div class="form-check">
                                     <label class="form-check-label">
+                                        {% for choice in question.choice_set.all %}
                                         <input type="checkbox" name="choice_{{choice.id}}"
-                                               class="form-check-input" id="{{choice.id}}"
-                                               value="{{choice.id}}">{{ choice.choice_text }}
+                                            class="form-check-input" id="{{choice.id}}"
+                                            value="{{choice.id}}">{{ choice.choice_text }}
+                                        <br>
+                                        {% endfor %}
                                     </label>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                     <input class="btn btn-success btn-block" type="submit" value="Submit">
-            </form> -->
+            </form> 
+        </div>
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
