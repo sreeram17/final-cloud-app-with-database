@@ -78,7 +78,9 @@
             <!-- A choice submission form example -->
         <button type="button" class="btn btn-primary btn-block" data-toggle="collapse" data-target="#exam">Show questions</button>
         <div id="exam" class="collapse">
-            <form id="questionform" action="point to a submit view" method="post">
+            
+            <form id="questionform" action="submit/" method="post">
+            {% csrf_token %}
                         <!--... for each question in the course ...-->
                         {% for question in course.question_set.all %}
                         <div class="card mt-1">
