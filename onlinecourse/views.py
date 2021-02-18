@@ -152,10 +152,11 @@ def show_exam_result(request, course_id, submission_id):
     #submission=Submission.objects.get(pk=submission_id)
     selected_choices = Submission.objects.filter(pk=submission_id).only('choices')
     context={}
-    #correct = 0
-    #for key in selected_choices:
-    #    if key.is_correct:
-    #        correct+=1
+    correct = 0
+    for key in selected_choices:
+        print(key)
+        #.is_get_score(key)
+         #   correct+=1
     
     grade=79
     context['course']=course
