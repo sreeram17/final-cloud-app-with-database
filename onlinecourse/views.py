@@ -149,19 +149,14 @@ def extract_answers(request):
         # Calculate the total score
 def show_exam_result(request, course_id, submission_id):
     course = Course.objects.get(pk=course_id)
-    #submission=Submission.objects.get(pk=submission_id)
     selected_choices = Submission.objects.get(pk=submission_id)
-    #.only('choices')
     context={}
     correct = 0
-    for key in selected_choices.choices.all():
-        print(key.question)
-        print(key.choice_text)
-        print(key.is_correct)
-        #.is_get_score(key)
-         #   correct+=1
+    for question in course.question_set.all():
+        if(question.is_get_score(selected_choices.choices.filter(question=question))):
+            correct+=1
     
-    grade=82
+    grade=int((correct/course.question_set.count())*100)
     context['course']=course
     context['selected_ids']=selected_choices
     context['grade']=grade
