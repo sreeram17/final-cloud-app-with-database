@@ -121,10 +121,7 @@ def submit(request, course_id):
         submitted_answers = extract_answers(request)
         submission = Submission.objects.create(enrollment=enrolled_course)
         for key in submitted_answers:
-            #choice = Choice.objects.get(id=key)
-            #submission = 
             submission.choices.add(Choice.objects.get(id=key))
-            #submission.save()
         return redirect('onlinecourse:show_exam_result',course_id=course_id,submission_id=submission.id)
 
 
